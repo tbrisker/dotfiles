@@ -1,28 +1,28 @@
 [user]
-	name = Tomer Brisker
-	email = tbrisker@gmail.com
-	signingkey = 7AFED1A2E9384F90804395FD27A6231BCE5EE9E3
+  name = Tomer Brisker
+  email = tbrisker@gmail.com
+  signingkey = 7AFED1A2E9384F90804395FD27A6231BCE5EE9E3
 [core]
-	editor = vim
+  editor = vim
 [color]
-	ui = true
+  ui = true
 [alias]
-	branch-name = "!git rev-parse --abbrev-ref HEAD"
-	co = checkout
+  branch-name = "!git rev-parse --abbrev-ref HEAD"
+  co = checkout
   cp = cherry-pick -S -x
   cs = commit -S -a
   amend = commit -S -a --amend
-	s = status
-	fp= "!git push origin --force $(git branch-name)"
-	up = "!git pull upstream $(git branch-name); git push origin $(git branch-name)"
+  s = status
+  fp= "!git push origin --force $(git branch-name)"
+  up = "!git pull upstream $(git branch-name); git push origin $(git branch-name)"
   hist = log --pretty=format:"%C(red)%h\\ %C(yellow)%ad\\ %Creset%s%Cblue\\ <%an>\\ %Cred%d" --decorate --date=short
   tagpush = "!git push --follow-tags upstream $(git branch-name)"
   shorthist = log --pretty=format:"%s" --decorate --date=short
   discard = checkout .
-	unstage = reset HEAD
+  unstage = reset HEAD
 [push]
-	default = simple
+  default = simple
 [gpg]
-	program = gpg2
+  program = gpg2
 [commit]
-	gpgsign = true
+  gpgsign = true
