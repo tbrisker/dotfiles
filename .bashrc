@@ -7,9 +7,6 @@ fi
 
 # User specific aliases and functions
 
-export PATH="$PATH:$HOME/.rvm/bin" # Add RVM to PATH for scripting
-export NOTIFICATIONS_POLLING=999999999
-
 __git_ps1 () 
 { 
     local b="$(git symbolic-ref HEAD 2>/dev/null)";
@@ -23,17 +20,28 @@ function __git_dirty {
   [ $? == 1 ] && echo "!"
 }
 
-function __git_branch {
-  __git_ps1 " %s"
+function __ocm_env {
+  local e="$(ocm config get url 2>/dev/null)";
+  case $e in
+    "https://api.openshift.com")
+      echo "P"
+    ;;
+    "https://api.stage.openshift.com")
+      echo "S"
+    ;;
+    "https://api.integration.openshift.com")
+      echo "I"
+    ;;
+    "http://localhost:9000")
+      echo "L"
+    ;;
+    *)
+    echo "?"
+  esac
 }
 
-function __my_rvm_ruby_version {
-  local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
-  [ "$gemset" != "" ] && gemset="@$gemset"
-  local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
-  [ "$version" == "1.8.7" ] && version=""
-  local full="$version$gemset"
-  [ "$full" != "" ] && echo "$full "
+function __git_branch {
+  __git_ps1 " %s"
 }
 
 bash_prompt() {
@@ -72,16 +80,19 @@ bash_prompt() {
   local UC=$W                 # user's color
   [ $UID -eq "0" ] && UC=$R   # root's color
 
-  PS1="$B\$(__my_rvm_ruby_version)$EMY\w$EMW\$(__git_branch)$EMY\$(__git_dirty)${NONE} $ "
+  PS1="$EMY\w$EMW\$(__git_branch)$EMY\$(__git_dirty) $EMR\$(__ocm_env)$NONE $ "
 }
 
 bash_prompt
 unset bash_prompt
 alias g='git'
 alias gi='git'
-alias cf='cd ~/foreman'
+alias ocm-local='ocm config set url http://localhost:9000'
+alias ocm-int='ocm config set url https://api.integration.openshift.com'
+alias ocm-stage='ocm config set url https://api.stage.openshift.com'
+alias ocm-prod='ocm config set url https://api.openshift.com'
+
 stty -ixon
 
+eval "$(direnv hook bash)"
 
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"

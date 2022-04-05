@@ -20,9 +20,16 @@
   shorthist = log --pretty=format:"%s" --decorate --date=short
   discard = checkout .
   unstage = reset HEAD
+  ph = "!git push origin HEAD --set-upstream --quiet"
+  pr = "!hub pull-request"
+  phr = "!git ph && git pr"
 [push]
   default = simple
 [gpg]
   program = gpg2
 [commit]
-  gpgsign = true
+	gpgsign = true
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
